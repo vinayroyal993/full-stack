@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Tracking System</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input, button { margin: 5px; padding: 8px; }
+        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
+    </style>
+</head>
+<body>
+
+<h2>📦 Order Tracking System</h2>
+
+<!-- Add Order -->
+<h3>Add Order</h3>
+<input id="customer" placeholder="Customer Name">
+<input id="product" placeholder="Product Name">
+<input id="amount" placeholder="Amount">
+<button onclick="addOrder()">Add Order</button>
+
+<!-- Update Order -->
+<h3>Update Order Status</h3>
+<input id="order_id" placeholder="Order ID">
+<input id="status" placeholder="New Status (Shipped/Delivered)">
+<button onclick="updateOrder()">Update</button>
+
+<!-- Logs -->
+<h3>Order Logs</h3>
+<button onclick="loadLogs()">Show Logs</button>
+<table id="logTable"></table>
+
+<!-- Report -->
+<h3>Daily Report</h3>
+<button onclick="loadReport()">Show Report</button>
+<table id="reportTable"></table>
+
+<script>
+function addOrder() {
+    fetch('/add_order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            customer: document.getElementById('customer').value,
+            product: document.getElementById('product').value,
+            status: "Placed",
+            amount: document.getElementById('amount').value
+        })
+    }).then(res => res.json()).then(data => alert(data.message));
+}
+
+function updateOrder() {
+    fetch('/update_order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id: document.getElementById('order_id').value,
+            status: document.getElementById('status').value
+        })
+    }).then(res => res.json()).then(data => alert(data.message));
+}
+
+function loadLogs() {
+    fetch('/logs')
+    .then(res => res.json())
+    .then(data => {
+        let table = "<tr><th>ID</th><th>Order ID</th><th>Action</th><th>Old Status</th><th>New Status</th></tr>";
+        data.forEach(row => {
+            table += `<tr>
+                <td>${row.log_id}</td>
+                <td>${row.order_id}</td>
+                <td>${row.action}</td>
+                <td>${row.old_status}</td>
+                <td>${row.new_status}</td>
+            </tr>`;
+        });
+        document.getElementById("logTable").innerHTML = table;
+    });
+}
+
+function loadReport() {
+    fetch('/report')
+    .then(res => res.json())
+    .then(data => {
+        let table = "<tr><th>Date</th><th>Total Updates</th></tr>";
+        data.forEach(row => {
+            table += `<tr>
+                <td>${row.report_date}</td>
+                <td>${row.total_updates}</td>
+            </tr>`;
+        });
+        document.getElementById("reportTable").innerHTML = table;
+    });
+}
+</script>
+
+</body>
+</html>

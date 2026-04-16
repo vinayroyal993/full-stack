@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Internship Registration</title>
+</head>
+<body>
+
+    <h2>Student Internship Registration</h2>
+
+    <form method="POST" action="/submit">
+        
+        <label>Name:</label><br>
+        <input type="text" name="student_name" required><br><br>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Phone:</label><br>
+        <input type="text" name="phone" required><br><br>
+
+        <label>Course:</label><br>
+        <input type="text" name="course" required><br><br>
+
+        <label>Preferred Domain:</label><br>
+        <select name="domain" required>
+            <option value="">Select</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Data Science">Data Science</option>
+            <option value="AI/ML">AI/ML</option>
+            <option value="Cyber Security">Cyber Security</option>
+        </select><br><br>
+
+        <button type="submit">Register</button>
+    </form>
+
+</body>
+</html>
